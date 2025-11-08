@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Analyzer - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-wallet text-indigo-600 text-2xl"></i>
+                <h1 class="text-2xl font-bold text-gray-800">Finance Analyzer</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-600" id="userName"></span>
+                <button id="logoutBtn" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container mx-auto px-4 py-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Total Income</p>
+                        <h3 class="text-2xl font-bold text-green-600" id="totalIncome">₹0</h3>
+                    </div>
+                    <i class="fas fa-arrow-up text-green-500 text-3xl"></i>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Total Expenses</p>
+                        <h3 class="text-2xl font-bold text-red-600" id="totalExpenses">₹0</h3>
+                    </div>
+                    <i class="fas fa-arrow-down text-red-500 text-3xl"></i>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Savings</p>
+                        <h3 class="text-2xl font-bold text-blue-600" id="savings">₹0</h3>
+                    </div>
+                    <i class="fas fa-piggy-bank text-blue-500 text-3xl"></i>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">This Month</p>
+                        <h3 class="text-2xl font-bold text-purple-600" id="monthExpenses">₹0</h3>
+                    </div>
+                    <i class="fas fa-calendar text-purple-500 text-3xl"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-6">
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg" id="insightsContainer">
+                <div class="flex">
+                    <i class="fas fa-lightbulb text-yellow-600 text-xl mr-3 mt-1"></i>
+                    <div id="insightsList"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-800">Top Categories This Month</h3>
+                <div id="topCategories"></div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 md:col-span-2">
+                <h3 class="text-lg font-semibold mb-4 text-gray-800">Recurring Payments</h3>
+                <div id="recurringPayments"></div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-800">Spending by Category</h3>
+                <canvas id="categoryPieChart"></canvas>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-800">Monthly Trend</h3>
+                <canvas id="monthlyTrendChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Upload Transactions</h3>
+            </div>
+            <div class="flex items-center space-x-4">
+                <input type="file" id="csvFile" accept=".csv" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg">
+                <button id="uploadBtn" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">
+                    <i class="fas fa-upload mr-2"></i>Upload CSV
+                </button>
+            </div>
+            <p class="text-sm text-gray-500 mt-2">CSV should contain columns: date, description, amount</p>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Add Transaction</h3>
+            </div>
+            <form id="addTransactionForm" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <input type="date" id="transactionDate" required class="px-4 py-2 border border-gray-300 rounded-lg">
+                <input type="text" id="transactionDesc" placeholder="Description" required class="px-4 py-2 border border-gray-300 rounded-lg">
+                <input type="number" id="transactionAmount" placeholder="Amount" step="0.01" required class="px-4 py-2 border border-gray-300 rounded-lg">
+                <select id="transactionType" required class="px-4 py-2 border border-gray-300 rounded-lg">
+                    <option value="debit">Expense</option>
+                    <option value="credit">Income</option>
+                </select>
+                <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                    <i class="fas fa-plus mr-2"></i>Add
+                </button>
+            </form>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Recent Transactions</h3>
+                <div class="flex space-x-2">
+                    <input type="text" id="searchBox" placeholder="Search..." class="px-4 py-2 border border-gray-300 rounded-lg">
+                    <select id="categoryFilter" class="px-4 py-2 border border-gray-300 rounded-lg">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Date</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Description</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Category</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Amount</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Type</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full">
+            <h3 class="text-xl font-bold mb-4">Edit Transaction</h3>
+            <form id="editTransactionForm">
+                <input type="hidden" id="editId">
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold mb-2">Date</label>
+                    <input type="date" id="editDate" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold mb-2">Description</label>
+                    <input type="text" id="editDesc" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold mb-2">Amount</label>
+                    <input type="number" id="editAmount" step="0.01" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold mb-2">Category</label>
+                    <select id="editCategory" required class="w-full px-4 py-2 border border-gray-300 rounded-lg"></select>
+                </div>
+                <div class="flex space-x-4">
+                    <button type="submit" class="flex-1 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">Save</button>
+                    <button type="button" id="cancelEdit" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="message" class="hidden fixed top-4 right-4 px-6 py-4 rounded-lg shadow-lg z-50"></div>
+    
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

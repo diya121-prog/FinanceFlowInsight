@@ -1,0 +1,14 @@
+{
+  "name": "finance-analyzer/app",
+  "description": "Personal Finance & Expense Analyzer",
+  "type": "project",
+  "require": {
+    "php": "^8.2",
+    "firebase/php-jwt": "^6.10"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "api/"
+    }
+  }
+}

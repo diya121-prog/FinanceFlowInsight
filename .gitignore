@@ -1,0 +1,6 @@
+vendor/
+composer.lock
+.env
+uploads/
+*.log
+.DS_Store
