@@ -29,7 +29,12 @@ class JWTHandler {
     }
     
     public static function getUserFromRequest() {
-        $headers = apache_request_headers();
+        $headers = function_exists('getallheaders') ? getallheaders() : [];
+        
+        if (empty($headers) && isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $headers['Authorization'] = $_SERVER['HTTP_AUTHORIZATION'];
+        }
+        
         $token = null;
         
         if (isset($headers['Authorization'])) {

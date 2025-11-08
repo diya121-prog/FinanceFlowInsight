@@ -142,7 +142,7 @@ elseif ($method === 'POST') {
                 $type = $amount >= 0 ? 'credit' : 'debit';
                 $absAmount = abs($amount);
                 
-                $categoryId = $categorizer->autoCategorizе($description, $amount);
+                $categoryId = $categorizer->autoCategorize($description, $amount);
                 
                 $query = "
                     INSERT INTO transactions (user_id, date, description, amount, type, category_id)
@@ -192,7 +192,7 @@ elseif ($method === 'POST') {
         }
         
         $categorizer = new Categorizer($db);
-        $categoryId = $input['category_id'] ?? $categorizer->autoCategorizе($description, $type === 'credit' ? $amount : -$amount);
+        $categoryId = $input['category_id'] ?? $categorizer->autoCategorize($description, $type === 'credit' ? $amount : -$amount);
         
         $query = "
             INSERT INTO transactions (user_id, date, description, amount, type, category_id, notes)

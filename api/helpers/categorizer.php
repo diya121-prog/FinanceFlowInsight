@@ -7,7 +7,7 @@ class Categorizer {
         $this->db = $database;
     }
     
-    public function autoCategorizе($description, $amount) {
+    public function autoCategorize($description, $amount) {
         $description = strtolower($description);
         
         if ($amount > 0) {
