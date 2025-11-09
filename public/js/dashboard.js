@@ -344,6 +344,10 @@ async function loadCategories() {
         
         const editCategory = document.getElementById('editCategory');
         editCategory.innerHTML = categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
+        
+        const transactionCategory = document.getElementById('transactionCategory');
+        transactionCategory.innerHTML = '<option value="">Select Category</option>' +
+            categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
     } catch (error) {
         console.error('Error loading categories:', error);
     }
@@ -425,7 +429,8 @@ document.getElementById('addTransactionForm').addEventListener('submit', async (
         date: document.getElementById('transactionDate').value,
         description: document.getElementById('transactionDesc').value,
         amount: document.getElementById('transactionAmount').value,
-        type: document.getElementById('transactionType').value
+        type: document.getElementById('transactionType').value,
+        category_id: document.getElementById('transactionCategory').value
     };
     
     try {
