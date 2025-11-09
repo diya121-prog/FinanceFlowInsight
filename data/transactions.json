@@ -42,5 +42,82 @@
         "notes": "",
         "id": 4,
         "created_at": "2025-11-09 10:59:54"
+    },
+    {
+        "user_id": 3,
+        "date": "2025-11-02",
+        "description": "Apollo",
+        "amount": 3000,
+        "type": "debit",
+        "category_id": "6",
+        "notes": "",
+        "id": 5,
+        "created_at": "2025-11-09 11:00:22"
+    },
+    {
+        "user_id": 3,
+        "date": "2025-11-08",
+        "description": "Swiggy",
+        "amount": 500,
+        "type": "debit",
+        "category_id": "1",
+        "notes": "",
+        "id": 6,
+        "created_at": "2025-11-09 11:00:38"
+    },
+    {
+        "user_id": 3,
+        "date": "2025-11-05",
+        "description": "Salary",
+        "amount": 20000,
+        "type": "credit",
+        "category_id": "10",
+        "notes": "",
+        "id": 7,
+        "created_at": "2025-11-09 11:01:18"
+    },
+    {
+        "user_id": 3,
+        "date": "2025-11-12",
+        "description": "Amazon",
+        "amount": 250,
+        "type": "debit",
+        "category_id": "4",
+        "notes": "",
+        "id": 8,
+        "created_at": "2025-11-09 11:02:01"
+    },
+    {
+        "user_id": 3,
+        "date": "2025-11-10",
+        "description": "Myntra",
+        "amount": 500,
+        "type": "debit",
+        "category_id": "4",
+        "notes": "",
+        "id": 9,
+        "created_at": "2025-11-09 11:02:17"
+    },
+    {
+        "user_id": 3,
+        "date": "2025-11-18",
+        "description": "Gas Bill",
+        "amount": 5000,
+        "type": "debit",
+        "category_id": "5",
+        "notes": "",
+        "id": 10,
+        "created_at": "2025-11-09 11:02:43"
+    },
+    {
+        "user_id": 3,
+        "date": "2025-11-06",
+        "description": "Ajio",
+        "amount": 3000,
+        "type": "debit",
+        "category_id": "4",
+        "notes": "",
+        "id": 11,
+        "created_at": "2025-11-09 11:03:05"
     }
 ]
