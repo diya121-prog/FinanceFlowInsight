@@ -3,220 +3,549 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Analyzer - Smart Money Management</title>
+    <title>FinanceTracker - AI-Powered Financial Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         
         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0a1628 0%, #172a46 50%, #1a3a52 100%);
             min-height: 100vh;
-            position: relative;
+            color: #fff;
             overflow-x: hidden;
         }
         
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .gradient-text {
+            background: linear-gradient(90deg, #00d4ff 0%, #7b68ee 50%, #9b4de8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
+        .gradient-button {
+            background: linear-gradient(90deg, #00d4ff 0%, #7b68ee 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .gradient-button:hover::before {
+            left: 100%;
+        }
+        
+        .gradient-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-        
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .feature-icon {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
             transition: all 0.3s ease;
         }
         
-        .btn-gradient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-5px);
         }
         
-        .tab-active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
         }
         
-        .input-focus:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        .icon-blue {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
         }
         
-        .bg-pattern {
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        .icon-green {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .icon-purple {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        .stats-box {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 3rem;
+        }
+        
+        .cta-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 4rem;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 2rem;
+        }
+        
+        .sparkle-icon {
+            color: #00d4ff;
+        }
+        
+        nav {
+            background: rgba(10, 22, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .logo-icon {
+            background: linear-gradient(135deg, #00d4ff 0%, #7b68ee 100%);
+            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .feature-list-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+        
+        .check-icon {
+            color: #00d4ff;
+            font-size: 0.875rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #0f1f38 0%, #1a2f4d 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .input-field:focus {
+            border-color: #00d4ff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab-button.active {
+            color: #00d4ff;
+            border-bottom-color: #00d4ff;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
-<body class="bg-pattern">
-    <div class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-        <div class="absolute top-20 left-20 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl floating"></div>
-        <div class="absolute bottom-20 right-20 w-96 h-96 bg-purple-300 opacity-10 rounded-full blur-3xl floating" style="animation-delay: 1s;"></div>
-    </div>
-    
-    <div class="container mx-auto px-4 py-8 relative z-10">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-12 pt-8">
-                <div class="inline-block feature-icon text-white p-6 rounded-3xl mb-6 floating">
-                    <i class="fas fa-wallet text-5xl"></i>
+<body>
+    <nav class="fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="logo-icon">
+                        <i class="fas fa-wallet text-white text-xl"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white">FinanceTracker</span>
                 </div>
-                <h1 class="text-6xl font-bold text-white mb-4">Finance Analyzer</h1>
-                <p class="text-xl text-white opacity-90 font-light">Smart money management made simple</p>
+                <button id="signInBtn" class="px-6 py-2.5 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-lg text-white font-medium transition-all">
+                    Sign In
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="pt-32 pb-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="badge mx-auto">
+                <i class="fas fa-sparkles sparkle-icon"></i>
+                <span>AI-Powered Financial Intelligence</span>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-8 mb-12">
-                <div class="glass-card rounded-3xl p-8">
-                    <div class="mb-8">
-                        <div class="flex gap-2">
-                            <button id="loginTab" class="flex-1 py-4 px-6 text-center font-semibold rounded-xl tab-active transition-all">
-                                <i class="fas fa-sign-in-alt mr-2"></i>Login
-                            </button>
-                            <button id="registerTab" class="flex-1 py-4 px-6 text-center font-semibold text-gray-600 hover:bg-gray-100 rounded-xl transition-all">
-                                <i class="fas fa-user-plus mr-2"></i>Register
-                            </button>
-                        </div>
+            <h1 class="text-6xl md:text-7xl font-black mb-6 leading-tight">
+                Master Your <span class="gradient-text">Financial<br>Future</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed">
+                Experience the next generation of financial management. Track, analyze, and optimize your spending with intelligent insights and beautiful visualizations.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+                <button id="startTrialBtn" class="gradient-button px-8 py-4 rounded-lg text-white font-semibold text-lg flex items-center gap-2">
+                    Start Free Trial
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <button class="px-8 py-4 bg-transparent border border-gray-600 rounded-lg text-white font-semibold text-lg flex items-center gap-2 hover:bg-white hover:bg-opacity-5 transition-all">
+                    <i class="fas fa-chart-bar"></i>
+                    View Demo
+                </button>
+            </div>
+            
+            <div class="flex flex-wrap items-center justify-center gap-6 text-sm">
+                <div class="feature-list-item">
+                    <i class="fas fa-check-circle check-icon"></i>
+                    <span>No credit card required</span>
+                </div>
+                <div class="feature-list-item">
+                    <i class="fas fa-check-circle check-icon"></i>
+                    <span>Free forever plan</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold mb-4">
+                    Everything You Need to <span class="gradient-text">Succeed</span>
+                </h2>
+                <p class="text-xl text-gray-400">Powerful features designed to give you complete control over your finances</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="feature-card">
+                    <div class="feature-icon icon-blue">
+                        <i class="fas fa-chart-line text-3xl text-cyan-400"></i>
                     </div>
-                    
-                    <div id="loginForm">
-                        <form id="loginFormElement" class="space-y-6">
-                            <div>
-                                <label class="block text-gray-700 text-sm font-semibold mb-2" for="loginEmail">
-                                    Email Address
-                                </label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <i class="fas fa-envelope text-gray-400"></i>
-                                    </div>
-                                    <input type="email" id="loginEmail" required
-                                        class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl input-focus outline-none transition-all"
-                                        placeholder="your@email.com">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 text-sm font-semibold mb-2" for="loginPassword">
-                                    Password
-                                </label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <i class="fas fa-lock text-gray-400"></i>
-                                    </div>
-                                    <input type="password" id="loginPassword" required
-                                        class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl input-focus outline-none transition-all"
-                                        placeholder="Enter your password">
-                                </div>
-                            </div>
-                            <button type="submit"
-                                class="w-full btn-gradient text-white py-4 rounded-xl font-semibold text-lg shadow-lg">
-                                <i class="fas fa-sign-in-alt mr-2"></i>Sign In
-                            </button>
-                        </form>
-                    </div>
-                    
-                    <div id="registerForm" class="hidden">
-                        <form id="registerFormElement" class="space-y-6">
-                            <div>
-                                <label class="block text-gray-700 text-sm font-semibold mb-2" for="registerName">
-                                    Full Name
-                                </label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <i class="fas fa-user text-gray-400"></i>
-                                    </div>
-                                    <input type="text" id="registerName" required
-                                        class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl input-focus outline-none transition-all"
-                                        placeholder="John Doe">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 text-sm font-semibold mb-2" for="registerEmail">
-                                    Email Address
-                                </label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <i class="fas fa-envelope text-gray-400"></i>
-                                    </div>
-                                    <input type="email" id="registerEmail" required
-                                        class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl input-focus outline-none transition-all"
-                                        placeholder="your@email.com">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 text-sm font-semibold mb-2" for="registerPassword">
-                                    Password
-                                </label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <i class="fas fa-lock text-gray-400"></i>
-                                    </div>
-                                    <input type="password" id="registerPassword" required minlength="6"
-                                        class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl input-focus outline-none transition-all"
-                                        placeholder="At least 6 characters">
-                                </div>
-                            </div>
-                            <button type="submit"
-                                class="w-full btn-gradient text-white py-4 rounded-xl font-semibold text-lg shadow-lg">
-                                <i class="fas fa-user-plus mr-2"></i>Create Account
-                            </button>
-                        </form>
-                    </div>
-                    
-                    <div id="message" class="mt-6 hidden"></div>
+                    <h3 class="text-2xl font-bold mb-3">Smart Analytics</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        AI-powered insights that analyze your spending patterns and predict future trends with stunning visualizations.
+                    </p>
                 </div>
                 
-                <div class="space-y-6">
-                    <div class="glass-card rounded-3xl p-8 transform hover:scale-105 transition-all duration-300">
-                        <div class="feature-icon text-white p-4 rounded-2xl w-16 h-16 flex items-center justify-center mb-4">
-                            <i class="fas fa-chart-line text-2xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Smart Insights</h3>
-                        <p class="text-gray-600 leading-relaxed">Get personalized spending insights and track your financial habits with AI-powered analytics</p>
+                <div class="feature-card">
+                    <div class="feature-icon icon-green">
+                        <i class="fas fa-clock text-3xl text-green-400"></i>
                     </div>
-                    
-                    <div class="glass-card rounded-3xl p-8 transform hover:scale-105 transition-all duration-300">
-                        <div class="feature-icon text-white p-4 rounded-2xl w-16 h-16 flex items-center justify-center mb-4">
-                            <i class="fas fa-file-csv text-2xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3">CSV Import</h3>
-                        <p class="text-gray-600 leading-relaxed">Easily upload bank statements and automatically categorize all your transactions</p>
+                    <h3 class="text-2xl font-bold mb-3">Auto-Categorization</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Intelligent transaction categorization that learns from your habits and saves you hours of manual work.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon icon-purple">
+                        <i class="fas fa-shield-alt text-3xl text-purple-400"></i>
                     </div>
-                    
-                    <div class="glass-card rounded-3xl p-8 transform hover:scale-105 transition-all duration-300">
-                        <div class="feature-icon text-white p-4 rounded-2xl w-16 h-16 flex items-center justify-center mb-4">
-                            <i class="fas fa-redo text-2xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Recurring Payments</h3>
-                        <p class="text-gray-600 leading-relaxed">Automatically detect and track your subscriptions and recurring expenses</p>
+                    <h3 class="text-2xl font-bold mb-3">Bank-Level Security</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Military-grade encryption and enterprise security protocols keep your financial data completely private.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="stats-box">
+                <div class="grid md:grid-cols-3 gap-12">
+                    <div class="text-center">
+                        <div class="text-5xl md:text-6xl font-black gradient-text mb-3">10K+</div>
+                        <div class="text-gray-400 text-lg">Active Users</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl md:text-6xl font-black gradient-text mb-3">$2M+</div>
+                        <div class="text-gray-400 text-lg">Money Tracked</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl md:text-6xl font-black gradient-text mb-3">98%</div>
+                        <div class="text-gray-400 text-lg">Satisfaction Rate</div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+
+    <section class="py-20 px-6 mb-20">
+        <div class="max-w-5xl mx-auto">
+            <div class="cta-box text-center">
+                <h2 class="text-5xl font-bold mb-4">
+                    Ready to Transform Your <span class="gradient-text">Financial Life?</span>
+                </h2>
+                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Join thousands of smart users who've taken control of their finances. Start your journey today—completely free.
+                </p>
+                <button id="getStartedBtn" class="gradient-button px-10 py-5 rounded-lg text-white font-semibold text-lg inline-flex items-center gap-2 mb-6">
+                    <i class="fas fa-sparkles"></i>
+                    Get Started Now
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-400">
+                    <span>No credit card required</span>
+                    <span>•</span>
+                    <span>Free forever plan</span>
+                    <span>•</span>
+                    <span>Cancel anytime</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-8 px-6 border-t border-white border-opacity-5">
+        <div class="max-w-7xl mx-auto text-center text-gray-500">
+            <p>&copy; 2024 FinanceTracker. Built with precision and care.</p>
+        </div>
+    </footer>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="flex gap-4 mb-8 border-b border-white border-opacity-10">
+                <button class="tab-button active" id="loginTab">Login</button>
+                <button class="tab-button" id="registerTab">Register</button>
+            </div>
+            
+            <div id="loginForm">
+                <h3 class="text-2xl font-bold mb-6">Welcome Back</h3>
+                <form id="loginFormElement" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Email Address</label>
+                        <input type="email" id="loginEmail" required class="input-field" placeholder="your@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Password</label>
+                        <input type="password" id="loginPassword" required class="input-field" placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="gradient-button w-full py-3.5 rounded-lg text-white font-semibold text-lg mt-2">
+                        Sign In
+                    </button>
+                </form>
+            </div>
+            
+            <div id="registerForm" class="hidden">
+                <h3 class="text-2xl font-bold mb-6">Create Account</h3>
+                <form id="registerFormElement" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Full Name</label>
+                        <input type="text" id="registerName" required class="input-field" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Email Address</label>
+                        <input type="email" id="registerEmail" required class="input-field" placeholder="your@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Password</label>
+                        <input type="password" id="registerPassword" required minlength="6" class="input-field" placeholder="At least 6 characters">
+                    </div>
+                    <button type="submit" class="gradient-button w-full py-3.5 rounded-lg text-white font-semibold text-lg mt-2">
+                        Create Account
+                    </button>
+                </form>
+            </div>
+            
+            <div id="message" class="mt-4 hidden"></div>
+        </div>
     </div>
-    
+
     <script src="js/api.js"></script>
-    <script src="js/auth.js"></script>
+    <script>
+        if (localStorage.getItem('token')) {
+            window.location.href = '/dashboard.html';
+        }
+
+        const modal = document.getElementById('authModal');
+        const signInBtn = document.getElementById('signInBtn');
+        const startTrialBtn = document.getElementById('startTrialBtn');
+        const getStartedBtn = document.getElementById('getStartedBtn');
+        const closeModal = document.getElementById('closeModal');
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const messageDiv = document.getElementById('message');
+
+        function openModal() {
+            modal.classList.add('active');
+        }
+
+        function closeModalFn() {
+            modal.classList.remove('active');
+        }
+
+        signInBtn.addEventListener('click', openModal);
+        startTrialBtn.addEventListener('click', () => {
+            openModal();
+            showRegisterForm();
+        });
+        getStartedBtn.addEventListener('click', () => {
+            openModal();
+            showRegisterForm();
+        });
+        closeModal.addEventListener('click', closeModalFn);
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModalFn();
+        });
+
+        loginTab.addEventListener('click', showLoginForm);
+        registerTab.addEventListener('click', showRegisterForm);
+
+        function showLoginForm() {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+            messageDiv.classList.add('hidden');
+        }
+
+        function showRegisterForm() {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+            messageDiv.classList.add('hidden');
+        }
+
+        function showMessage(message, isError = false) {
+            messageDiv.textContent = message;
+            messageDiv.className = `mt-4 p-4 rounded-lg text-center ${isError ? 'bg-red-500 bg-opacity-20 text-red-300' : 'bg-green-500 bg-opacity-20 text-green-300'}`;
+            messageDiv.classList.remove('hidden');
+        }
+
+        document.getElementById('loginFormElement').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await API.auth.login(email, password);
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('user', JSON.stringify(response.user));
+                window.location.href = '/dashboard.html';
+            } catch (error) {
+                showMessage(error.message || 'Login failed. Please try again.', true);
+            }
+        });
+
+        document.getElementById('registerFormElement').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const full_name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            try {
+                const response = await API.auth.register(email, password, full_name);
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('user', JSON.stringify(response.user));
+                window.location.href = '/dashboard.html';
+            } catch (error) {
+                showMessage(error.message || 'Registration failed. Please try again.', true);
+            }
+        });
+    </script>
 </body>
 </html>
