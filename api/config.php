@@ -10,26 +10,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 class Database {
-    private $host;
-    private $db_name;
-    private $username;
-    private $password;
-    private $port;
     public $conn;
-
-    public function __construct() {
-        $this->host = getenv('PGHOST');
-        $this->db_name = getenv('PGDATABASE');
-        $this->username = getenv('PGUSER');
-        $this->password = getenv('PGPASSWORD');
-        $this->port = getenv('PGPORT') ?: '5432';
-    }
 
     public function getConnection() {
         $this->conn = null;
         try {
-            $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->db_name}";
-            $this->conn = new PDO($dsn, $this->username, $this->password);
+            $database_url = getenv('DATABASE_URL');
+            
+            if ($database_url && !empty(trim($database_url))) {
+                if (strpos($database_url, 'postgresql://') === 0 || strpos($database_url, 'postgres://') === 0) {
+                    $parsed = parse_url($database_url);
+                    $host = $parsed['host'] ?? 'localhost';
+                    $port = $parsed['port'] ?? 5432;
+                    $dbname = ltrim($parsed['path'] ?? '', '/');
+                    $username = $parsed['user'] ?? 'postgres';
+                    $password = $parsed['pass'] ?? '';
+                    
+                    $dsn = "pgsql:host={$host};port={$port};dbname={$dbname}";
+                    $this->conn = new PDO($dsn, $username, $password);
+                } else {
+                    $this->conn = new PDO($database_url);
+                }
+            } else {
+                $host = getenv('PGHOST') ?: 'localhost';
+                $db_name = getenv('PGDATABASE') ?: 'postgres';
+                $username = getenv('PGUSER') ?: 'postgres';
+                $password = getenv('PGPASSWORD') ?: '';
+                $port = getenv('PGPORT') ?: '5432';
+                
+                $dsn = "pgsql:host={$host};port={$port};dbname={$db_name}";
+                $this->conn = new PDO($dsn, $username, $password);
+            }
+            
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e) {
             error_log("Connection error: " . $e->getMessage());

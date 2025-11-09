@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/helpers/jwt.php';
+require_once __DIR__ . '/simple_db.php';
 
-$database = new Database();
-$db = $database->getConnection();
+$db = new SimpleDatabase();
 
 $method = $_SERVER['REQUEST_METHOD'];
 $input = json_decode(file_get_contents('php://input'), true);
@@ -28,26 +28,20 @@ if ($method === 'POST') {
             sendError('Password must be at least 6 characters', 400);
         }
         
-        $checkQuery = "SELECT id FROM users WHERE email = :email";
-        $checkStmt = $db->prepare($checkQuery);
-        $checkStmt->bindParam(':email', $email);
-        $checkStmt->execute();
+        $existingUser = $db->findOne('users', 'email', $email);
         
-        if ($checkStmt->rowCount() > 0) {
+        if ($existingUser) {
             sendError('Email already exists', 409);
         }
         
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         
-        $query = "INSERT INTO users (email, password, full_name) VALUES (:email, :password, :full_name) RETURNING id";
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $hashedPassword);
-        $stmt->bindParam(':full_name', $full_name);
-        
         try {
-            $stmt->execute();
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = $db->insert('users', [
+                'email' => $email,
+                'password' => $hashedPassword,
+                'full_name' => $full_name
+            ]);
             
             $token = JWTHandler::encode([
                 'id' => $user['id'],
@@ -64,7 +58,7 @@ if ($method === 'POST') {
                     'full_name' => $full_name
                 ]
             ], 201);
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
             sendError('Registration failed: ' . $e->getMessage(), 500);
         }
     }
@@ -77,16 +71,11 @@ if ($method === 'POST') {
         $email = filter_var($input['email'], FILTER_SANITIZE_EMAIL);
         $password = $input['password'];
         
-        $query = "SELECT id, email, password, full_name FROM users WHERE email = :email";
-        $stmt = $db->prepare($query);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
+        $user = $db->findOne('users', 'email', $email);
         
-        if ($stmt->rowCount() === 0) {
+        if (!$user) {
             sendError('Invalid email or password', 401);
         }
-        
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if (!password_verify($password, $user['password'])) {
             sendError('Invalid email or password', 401);
